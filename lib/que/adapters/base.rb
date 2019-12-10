@@ -99,7 +99,10 @@ module Que
       CAST_PROCS[23] = CAST_PROCS[20] = CAST_PROCS[21] = proc(&:to_i)
 
       # Timestamp with time zone.
-      CAST_PROCS[1184] = Time.method(:parse)
+      CAST_PROCS[1184] = -> (value) {
+        return value if value.is_a?(Time)
+        Time.parse(value)
+      }
 
       # JSON.
       CAST_PROCS[114] = -> (value) { JSON.parse(value, create_additions: false) }
